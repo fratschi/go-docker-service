@@ -55,7 +55,7 @@ RUN echo "build"
 RUN go build -ldflags="-s -w" -mod vendor -o service ./cmd/main.go
 RUN tree
 
-RUN chmod +x ${APP_BUILD_NAME}
+RUN chmod +x service
 
 ## Stage 3
 ## Assemble final service container from an empty scratch image
@@ -67,7 +67,7 @@ ENV APP_BUILD_PATH="/var/app" \
 
 WORKDIR ${APP_BUILD_PATH}
 
-COPY --from=build ${APP_BUILD_PATH}/${APP_BUILD_NAME} ${APP_BUILD_PATH}/
+COPY --from=build service ${APP_BUILD_PATH}/
 COPY --from=build /usr/share/zoneinfo /usr/share/zoneinfo
 COPY --from=build /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 COPY --from=build /etc/passwd /etc/passwd
