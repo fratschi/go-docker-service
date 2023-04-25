@@ -21,8 +21,15 @@ ENV APP_BUILD_NAME="${APP_NAME}"
 #RUN echo $APP_BUILD_NAME
 RUN mkdir /var/app
 
+RUN echo "pre copy"
+
 COPY . ${APP_PATH}
+
+RUN echo "post copy"
+
 WORKDIR ${APP_PATH}
+
+RUN echo "workdir"
 
 ENV GO111MODULE="on" \
     CGO_ENABLED=0 \
