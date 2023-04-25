@@ -2,7 +2,7 @@
 ## Multistage docker build for creating a smallest possible docker container
 ###################################################################################
 
-ARG GO_VERSION=1.20
+ARG GO_VERSION=1.17
 
 ## Stage 1
 ## Prepare dev environment for building service
@@ -17,8 +17,8 @@ ENV APP_NAME="service" \
 
 ENV APP_BUILD_NAME="${APP_NAME}"
 
-RUN echo "test"
-RUN echo $APP_BUILD_NAME
+#RUN echo "test"
+#RUN echo $APP_BUILD_NAME
 
 COPY . ${APP_PATH}
 WORKDIR ${APP_PATH}
