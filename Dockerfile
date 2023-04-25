@@ -63,7 +63,7 @@ RUN chmod +x service
 FROM scratch AS service
 
 
-COPY --from=build service /service
+COPY --from=build /var/app/service /service
 COPY --from=build /usr/share/zoneinfo /usr/share/zoneinfo
 COPY --from=build /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 COPY --from=build /etc/passwd /etc/passwd
