@@ -9,10 +9,7 @@ ARG GO_VERSION=1.17
 
 FROM golang:${GO_VERSION}-alpine AS dev
 
-RUN apk update && apk add --no-cache git ca-certificates tzdata tree && update-ca-certificates
-
-ENV APP_NAME="service" \
-    APP_PORT=8080
+RUN apk update && apk add --no-cache git ca-certificates tzdata && update-ca-certificates
 
 ENV GO111MODULE="on" \
     CGO_ENABLED=0 \
@@ -30,11 +27,9 @@ FROM dev as build
 ENV USER=serviceuser
 ENV UID=10001
 
-RUN mkdir /var/app
+RUN mkdir /var/app && mkdir vendor
 COPY --from=0 /workdir /var/app
 WORKDIR /var/app
-RUN mkdir vendor
-RUN tree
 
 RUN adduser \
     --disabled-password \
@@ -45,16 +40,8 @@ RUN adduser \
     --uid "${UID}" \
     "${USER}"
 
-RUN ls -l
 ## Build
-RUN echo "vendor"
-RUN (([ ! -d "./vendor" ] && go mod download && go mod vendor) || true)
-RUN tree
-
-RUN echo "build"
-RUN go build -ldflags="-s -w" -mod vendor -o service ./cmd/main.go
-RUN tree
-
+RUN (([ ! -d "./vendor" ] && go mod download && go mod vendor) || true) && RUN go build -ldflags="-s -w" -mod vendor -o service ./cmd/main.go
 RUN chmod +x service
 
 ## Stage 3
@@ -62,14 +49,13 @@ RUN chmod +x service
 
 FROM scratch AS service
 
-
 COPY --from=build /var/app/service /service
 COPY --from=build /usr/share/zoneinfo /usr/share/zoneinfo
 COPY --from=build /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 COPY --from=build /etc/passwd /etc/passwd
 COPY --from=build /etc/group /etc/group
 
-EXPOSE ${APP_PORT}
+EXPOSE 8080
 
 USER serviceuser:serviceuser
 
