@@ -41,7 +41,7 @@ RUN adduser \
     "${USER}"
 
 ## Build
-RUN (([ ! -d "./vendor" ] && go mod download && go mod vendor) || true) && RUN go build -ldflags="-s -w" -mod vendor -o service ./cmd/main.go
+RUN (([ ! -d "./vendor" ] && go mod download && go mod vendor) || true) && go build -ldflags="-s -w" -mod vendor -o service ./cmd/main.go
 RUN chmod +x service
 
 ## Stage 3
