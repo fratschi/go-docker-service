@@ -12,14 +12,16 @@ FROM golang:${GO_VERSION}-alpine AS dev
 RUN apk update && apk add --no-cache git ca-certificates tzdata && update-ca-certificates
 
 ENV APP_NAME="service" \
-    APP_PATH="/workdir" \
+    APP_PATH="/var/app" \
     APP_PORT=8080
 
 ENV APP_BUILD_NAME="${APP_NAME}"
 
-#WORKDIR ${APP_PATH}
+COPY /workdir ${APP_PATH}
+WORKDIR ${APP_PATH}
 
 RUN echo "workdir"
+
 
 ENV GO111MODULE="on" \
     CGO_ENABLED=0 \
@@ -46,8 +48,11 @@ RUN adduser \
     --uid "${UID}" \
     "${USER}"
 
+RUN ls -l
 ## Build
+RUN echo "vendor"
 RUN (([ ! -d "${APP_PATH}/vendor" ] && go mod download && go mod vendor) || true)
+RUN echo "build"
 RUN go build -ldflags="-s -w" -mod vendor -o ${APP_BUILD_NAME} cmd/main.go
 
 RUN chmod +x ${APP_BUILD_NAME}
