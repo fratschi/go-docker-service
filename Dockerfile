@@ -9,7 +9,7 @@ ARG GO_VERSION=1.17
 
 FROM golang:${GO_VERSION}-alpine AS dev
 
-RUN apk update && apk add --no-cache git ca-certificates tzdata && update-ca-certificates
+RUN apk update && apk add --no-cache git ca-certificates tzdata tree && update-ca-certificates
 
 ENV APP_NAME="service" \
     APP_PATH="/var/app" \
@@ -17,6 +17,7 @@ ENV APP_NAME="service" \
 
 ENV APP_BUILD_NAME="${APP_NAME}"
 
+RUN tree
 COPY /workdir ${APP_PATH}
 WORKDIR ${APP_PATH}
 
