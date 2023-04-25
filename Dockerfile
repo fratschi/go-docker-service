@@ -62,12 +62,8 @@ RUN chmod +x service
 
 FROM scratch AS service
 
-ENV APP_BUILD_PATH="/var/app" \
-    APP_BUILD_NAME="service"
 
-WORKDIR ${APP_BUILD_PATH}
-
-COPY --from=build service ${APP_BUILD_PATH}/
+COPY --from=build service /service
 COPY --from=build /usr/share/zoneinfo /usr/share/zoneinfo
 COPY --from=build /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 COPY --from=build /etc/passwd /etc/passwd
@@ -77,5 +73,5 @@ EXPOSE ${APP_PORT}
 
 USER serviceuser:serviceuser
 
-ENTRYPOINT ["/var/app/service"]
+ENTRYPOINT ["/service"]
 CMD ""
