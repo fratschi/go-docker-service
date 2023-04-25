@@ -32,6 +32,8 @@ ENV UID=10001
 
 RUN mkdir /var/app
 COPY --from=0 /workdir /var/app
+WORKDIR /var/app
+RUN tree
 
 RUN adduser \
     --disabled-password \
