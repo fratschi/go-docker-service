@@ -12,14 +12,14 @@ FROM golang:${GO_VERSION}-alpine AS dev
 RUN apk update && apk add --no-cache git ca-certificates tzdata && update-ca-certificates
 
 ENV APP_NAME="service" \
-    APP_PATH="/var/app" \
+    APP_PATH="/workdir/app" \
     APP_PORT=8080
 
 ENV APP_BUILD_NAME="${APP_NAME}"
 
 #RUN echo "test"
 #RUN echo $APP_BUILD_NAME
-RUN mkdir /var/app
+RUN mkdir /workdir/app
 
 RUN echo "pre copy"
 
