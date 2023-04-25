@@ -19,6 +19,7 @@ ENV APP_BUILD_NAME="${APP_NAME}"
 
 #RUN echo "test"
 #RUN echo $APP_BUILD_NAME
+RUN mkdir /var/app
 
 COPY . ${APP_PATH}
 WORKDIR ${APP_PATH}
