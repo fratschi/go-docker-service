@@ -17,7 +17,7 @@ ENV APP_NAME="service" \
 
 ENV APP_BUILD_NAME="${APP_NAME}"
 
-RUN tree
+RUN cd /workdir && tree
 COPY /workdir ${APP_PATH}
 WORKDIR ${APP_PATH}
 
