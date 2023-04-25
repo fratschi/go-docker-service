@@ -23,7 +23,7 @@ RUN mkdir /workdir/app
 
 RUN echo "pre copy"
 
-COPY . ${APP_PATH}
+COPY ./. ${APP_PATH}
 
 RUN echo "post copy"
 
