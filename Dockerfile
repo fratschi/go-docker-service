@@ -52,7 +52,7 @@ RUN (([ ! -d "./vendor" ] && go mod download && go mod vendor) || true)
 RUN tree
 
 RUN echo "build"
-RUN go build -ldflags="-s -w" -mod vendor -o ${APP_BUILD_NAME} ./cmd/main.go
+RUN go build -ldflags="-s -w" -mod vendor -o ${APP_BUILD_NAME} /var/app/cmd/main.go
 RUN tree
 
 RUN chmod +x ${APP_BUILD_NAME}
