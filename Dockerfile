@@ -33,6 +33,7 @@ ENV UID=10001
 RUN mkdir /var/app
 COPY --from=0 /workdir /var/app
 WORKDIR /var/app
+RUN mkdir vendor
 RUN tree
 
 RUN adduser \
@@ -47,7 +48,7 @@ RUN adduser \
 RUN ls -l
 ## Build
 RUN echo "vendor"
-RUN (([ ! -d "/var/app/vendor" ] && go mod download && go mod vendor) || true)
+RUN (([ ! -d "./vendor" ] && go mod download && go mod vendor) || true)
 RUN echo "build"
 RUN go build -ldflags="-s -w" -mod vendor -o ${APP_BUILD_NAME} cmd/main.go
 
